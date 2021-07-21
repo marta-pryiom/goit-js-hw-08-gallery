@@ -54,14 +54,15 @@ galleryContainer.addEventListener('click', onGalleryContainerClick);
       
     }
  window.addEventListener("keydown", enterKeyClick);
+
 modalBtn.addEventListener('click', onModalBtnClick);
     function onModalBtnClick(e) {
       lightbox.classList.remove('is-open');
       modalImage.src = '';
       modalImage.alt = '';
       
-      window.removeEventListener('keydown', onEscKeyClick);
-      window.removeEventListener("keydown", enterKeyClick);
+      // window.removeEventListener('keydown', onEscKeyClick);
+      // window.removeEventListener("keydown", enterKeyClick);
       body.style.cssText -=`  height: 100%;
    width: 100%;
    position: fixed;
@@ -76,12 +77,17 @@ console.log(e)
       }
 }
 function enterKeyClick(e) {
-  console.log('enter');
-  if (e.code === "Enter") {
-    onGalleryContainerClick();
+  console.log("enter");
+  console.log(e.target);
+  if (e.code === "Enter" && e.target.nodeName === "A") {
+    lightbox.classList.add("is-open");
+    modalImage.src = e.target.href;
+    body.style.cssText += `  height: 100%;
+   width: 100%;
+   position: fixed;
+   overflow: hidden; `;
   }
 }
-
 backdrop.addEventListener('click', onLightboxClick);
 function onLightboxClick(e) {
   if (e.target === e.currentTarget) {
