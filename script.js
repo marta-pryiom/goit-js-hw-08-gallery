@@ -1,20 +1,17 @@
 import galleryItems from "./app.js";
 
 const galleryContainer = document.querySelector('.js-gallery');
-const imageMarkup = createGalleryList(galleryItems);
 const lightbox = document.querySelector('.lightbox');
-const modal = document.querySelector('.lightbox__content');
 const modalImage = document.querySelector('.lightbox__image');
 const modalBtn = document.querySelector('[data-action="close-lightbox"]');
 const body = document.querySelector('body');
- const backdrop = document.querySelector('.lightbox__overlay')
+const backdrop = document.querySelector('.lightbox__overlay')
+    
 
-
-galleryContainer.insertAdjacentHTML('beforeend', imageMarkup);
-    function createGalleryList(galleryItems) {
-      return galleryItems
-        .map(({ preview, original, description }) => {
-          return`
+    
+function createGalleryList() {
+      return galleryItems.map(({ preview, original, description }) => {
+          return `
           <li class="gallery__item">
       <a
         class="gallery__link"
@@ -33,7 +30,8 @@ galleryContainer.insertAdjacentHTML('beforeend', imageMarkup);
         .join('');
       
     };
- 
+galleryContainer.insertAdjacentHTML('beforeend', createGalleryList());
+
 galleryContainer.addEventListener('click', onGalleryContainerClick);
 
     function onGalleryContainerClick(e) {
@@ -52,9 +50,10 @@ galleryContainer.addEventListener('click', onGalleryContainerClick);
    overflow: hidden; `
       }
       window.addEventListener("keydown", onEscKeyClick);
+     
       
     }
-    
+ window.addEventListener("keydown", enterKeyClick);
 modalBtn.addEventListener('click', onModalBtnClick);
     function onModalBtnClick(e) {
       lightbox.classList.remove('is-open');
@@ -62,6 +61,7 @@ modalBtn.addEventListener('click', onModalBtnClick);
       modalImage.alt = '';
       
       window.removeEventListener('keydown', onEscKeyClick);
+      window.removeEventListener("keydown", enterKeyClick);
       body.style.cssText -=`  height: 100%;
    width: 100%;
    position: fixed;
@@ -69,12 +69,17 @@ modalBtn.addEventListener('click', onModalBtnClick);
       
     }
 
-
 function onEscKeyClick(e) {
 console.log(e)
       if (e.code === "Escape") {
         onModalBtnClick();
       }
+}
+function enterKeyClick(e) {
+  console.log('enter');
+  if (e.code === "Enter") {
+    onGalleryContainerClick();
+  }
 }
 
 backdrop.addEventListener('click', onLightboxClick);
@@ -84,3 +89,4 @@ function onLightboxClick(e) {
     onModalBtnClick();
   }
 }
+
